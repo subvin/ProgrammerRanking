@@ -3,14 +3,7 @@
 import urllib,re,xlwt
 from operator import itemgetter, attrgetter 
 
-s = 0
-def add( itm ):
-    global s
-    s = itm + s
-    return s
-
-
-ids = ['ifeegoo','chiemy','misparking','wfiskz','subvin','iOnesmile','Jackwaiting','TalentsCZY','chenyunxuan','arrfu','luyonghe','huangshuhan','loveuqian','lhypro']
+ids = ['ifeegoo','chiemy','misparking','wfiskz','subvin','iOnesmile','jackwaiting','chenyunxuan','arrfu','luyonghe','lhypro','jarylan','huangshuhan']
 
 titleFormatter = "\t\t\t\t %10s \t %10s \t %10s \t %15s \t %25s \t %15s \t %15s \t %15s \t %19s \t  %19s\t"
 contentFormatter = "%15s  %10s \t %10s \t %10s \t  %14i \t %25s \t %15s \t %15s \t %15s \t %20f \t "
@@ -22,9 +15,11 @@ global startNum
 
 print '\t\t\tGitHub 	Ranking 	Situation\n\n'
 dataList = []
-title2 = ['Id','followers','Starred','Following','Organizations','Last Year Contributons','Longest Streak','Current Streak','Repositories','Stars Per Repository']
-for i in xrange(0,len(ids)):
+title2 = ['Total Ranking','Id','followers','Starred','Following','Organizations','Last Year Contributons','Longest Streak','Current Streak','Repositories','Stars Per Repository']
+print len(ids)
+for i in xrange(0,len(ids)):  # len(ids)
 	url = re.sub('id','%s'%ids[i],baseurl,re.S)
+	print url
 	wp = urllib.urlopen(url)
 	content = wp.read()
 	#  organizationnum  
@@ -32,10 +27,10 @@ for i in xrange(0,len(ids)):
 	OrganizationsInfo = ''
 	if len(orgInfo) != 0:
 		OrganizationsInfo = orgInfo[0]
-	else :
-		break
 	# = re.findall('<h3>Organizations</h3>(.*?)</div>',content,re.S)[0]
-	orgNum = re.findall('<a(.*?)/></a>',OrganizationsInfo,re.S)
+	if OrganizationsInfo != '':
+		orgNum = re.findall('<a(.*?)/></a>',OrganizationsInfo,re.S)
+
 	#print len(orgNum)
 	#print OrganizationsInfo
 	followerInfo = re.findall('<div class="vcard-stats border-top border-bottom border-gray-light mb-3 py-3">(.*?)</div>',content,re.S)[0]
@@ -64,7 +59,11 @@ for i in xrange(0,len(ids)):
 
 	#if (i == 0):
 	#	title2 = ['Id',followerNames[0],followerNames[1],followerNames[2],'Organizations','Last Year Contributons','Longest Streak','Current Streak','Repositories','Stars Per Repository']
-	aData = (ids[i],nums[0],nums[1],nums[2],len(orgNum),re.findall('(.*?) total',lastYearContributons[0],re.S)[0],lastYearContributons[1],lastYearContributons[2],len(repositoriesNum),perStarRatio)
+	orgCount = 0
+	if len(orgNum) != 0:
+		orgCount = len(orgNum)
+		
+	aData = (ids[i],nums[0],nums[1],nums[2],orgCount,re.findall('(.*?) total',lastYearContributons[0],re.S)[0],lastYearContributons[1],lastYearContributons[2],len(repositoriesNum),perStarRatio)
 	dataList.append(aData)
 	reWp.close()
 	wp.close()
@@ -73,43 +72,27 @@ for i in xrange(0,len(ids)):
 
 newDataList =  sorted(dataList, key=itemgetter(9,1,5,8),reverse = True)
 
-book = xlwt.Workbook(encoding = 'utf-8',style_compression = 0)
-sheet = book.add_sheet('sheet ',cell_overwrite_ok = True)
-#title2 = ('个人ID ',' 赞同数','感谢数','提问数','回答数','文章数','收藏','关注了','关注者',' 专栏数','话题数','被浏览次数','综合排名')
-
-for x in xrange(0,len(title2)):
-	sheet.write(0,x,title2[x])
-
-for x in xrange(0,len(newDataList)):
-	row = newDataList[x]
-	for col in xrange(0,len(row)):
-		sheet.write(x + 1,col,row[col])
-	sheet.write(x + 1,len(title2) - 1,x + 1)
-	
-
-savepath = '/Users/wangyunfeng/Desktop/GithuCrawer.xlsx'
-book.save(savepath)
-
-#titleContent = titleFormatter % title2
+print len(newDataList)
 
 f = open('/Users/wangyunfeng/Desktop/Github.txt','w')
-f.writelines(title2)
-
-#print titleFormatter%('id','Agree Number','Thanks Number','Ask Number','Answer Number','Article Number','Collections','Focus Number','Be Focused','Special Column','Topics','Be Reviewed Number')
-#newDataList =  sorted(dataList, key=itemgetter(1,2,8,6,11),reverse = True)
+ranktitle = ''
+for x in xrange(0,len(title2)):
+	ranktitle += '|%s'%title2[x]
+ranktitle += '    \n'
+f.write(ranktitle)
+tableFormatter = ''
+for x in xrange(0,len(title2)):
+	tableFormatter += '|---'
+tableFormatter += '|    \n'
+f.write(tableFormatter)
 for x in xrange(0,len(newDataList)):
-	DataContent =  contentFormatter % (newDataList[x])
-	f.writelines(DataContent)
-#	print contentFormatter % (newDataList[x])
-
-#f.writelines(newDataList)
+	rankContent = '|#%i'% int(x+1)
+	DataContent =  newDataList[x]
+	for j in xrange(0,len(DataContent)):
+		if 0 == j:
+			rankContent += '|[@%s](%s)'%(DataContent[0],re.sub('id','%s'%DataContent[0],baseurl,re.S))
+		else:
+			rankContent += '|%s'%DataContent[j]
+	rankContent += '    \n'
+	f.write(rankContent)
 f.close()
-
-
-
-
-
-
-
-
-
