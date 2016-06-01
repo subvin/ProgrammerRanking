@@ -15,7 +15,7 @@ global startNum
 
 print '\t\t\tGitHub 	Ranking 	Situation\n\n'
 dataList = []
-title2 = ['Total Ranking','Id','followers','Starred','Following','Organizations','Last Year Contributons','Longest Streak','Current Streak','Repositories','Stars Per Repository']
+title2 = ['Total Ranking','Id','followers','Starred','Following','Organizations','Repositories','Stars Per Repository']
 print len(ids)
 for i in xrange(0,len(ids)):  # len(ids)
 	url = re.sub('id','%s'%ids[i],baseurl,re.S)
@@ -37,9 +37,10 @@ for i in xrange(0,len(ids)):  # len(ids)
 	nums = re.findall('<strong class="vcard-stat-count d-block">(.*?)</strong>',followerInfo,re.S)
 	followerNames = re.findall('<span class="text-muted">(.*?)</span>',followerInfo,re.S)
 	contributionInfo = re.findall('<div class="contrib-column contrib-column-first table-column">(.*?)</div>',content,re.S)
-	lastYearContributons =  re.findall('contrib-number">(.*?)</span>',content,re.S)
-	Longeststreak =  lastYearContributons[1]
-	Currentstreak =  lastYearContributons[2]
+	#lastYearContributons =  re.findall('contrib-number">(.*?)</span>',content,re.S)
+	#print lastYearContributons
+	#Longeststreak =  lastYearContributons[1]
+	#Currentstreak =  lastYearContributons[2]
 
 
 	repositoriesUrl = re.sub('id','%s'%ids[i],repositoriesBaseUrl,re.S)  #//repositoriesBaseUrl
@@ -63,14 +64,15 @@ for i in xrange(0,len(ids)):  # len(ids)
 	if len(orgNum) != 0:
 		orgCount = len(orgNum)
 		
-	aData = (ids[i],nums[0],nums[1],nums[2],orgCount,re.findall('(.*?) total',lastYearContributons[0],re.S)[0],lastYearContributons[1],lastYearContributons[2],len(repositoriesNum),perStarRatio)
+	#re.findall('(.*?) total',lastYearContributons[0],re.S)[0],lastYearContributons[1],lastYearContributons[2],
+	aData = (ids[i],nums[0],nums[1],nums[2],orgCount,len(repositoriesNum),perStarRatio)
 	dataList.append(aData)
 	reWp.close()
 	wp.close()
 #	gistWebInfo.close()
 
 
-newDataList =  sorted(dataList, key=itemgetter(9,1,5,8),reverse = True)
+newDataList =  sorted(dataList, key=itemgetter(6,1,5),reverse = True)
 
 print len(newDataList)
 
