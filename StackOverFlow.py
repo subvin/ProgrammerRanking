@@ -83,9 +83,11 @@ f.write(tableFormatter)
 for x in xrange(0,len(newDataList)):
 	rankContent = '|#%i'% int(x+1)
 	DataContent =  newDataList[x]
+	print DataContent[0]
+	name = re.findall('/(.*)',DataContent[0],re.S)[0]
 	for j in xrange(0,len(DataContent)):
 		if 0 == j:
-			rankContent += '|[@%s](%s)'%(re.findall('%s',DataContent[0],re.S),re.sub('id','%s'%DataContent[0],baseurl,re.S))
+			rankContent += '|[@%s](%s)'%(name,re.sub('id','%s'%DataContent[0],baseurl,re.S))
 		else:
 			rankContent += '|%s'%DataContent[j]
 	rankContent += '    \n'
