@@ -3,7 +3,9 @@
 import urllib,re,xlwt
 from operator import itemgetter, attrgetter 
 
-ids = ['ifeegoo','chiemy','misparking','wfiskz','subvin','iOnesmile','jackwaiting','chenyunxuan','arrfu','luyonghe','Lewanny','jarylan','huangshuhan']
+ids = ['ifeegoo','chiemy','misparking','wfiskz','subvin','iOnesmile',
+'jackwaiting','chenyunxuan','arrfu','luyonghe','Lewanny','jarylan',
+'huangshuhan','HelloZihan','sunshore'];
 
 titleFormatter = "\t\t\t\t %10s \t %10s \t %10s \t %15s \t %25s \t %15s \t %15s \t %15s \t %19s \t  %19s\t"
 contentFormatter = "%15s  %10s \t %10s \t %10s \t  %14i \t %25s \t %15s \t %15s \t %15s \t %20f \t "

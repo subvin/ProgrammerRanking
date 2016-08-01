@@ -2,7 +2,9 @@ import urllib2,re
 import time
 from operator import itemgetter, attrgetter 
 
-ids = ['2531888/ifeegoo','2744948/chiemy','5299868/misparking','5469727/chenyunxuan','5470510/ionesmile','5469824/fiskz','5467900/subvin','5470345/jackwaiting','5471377/arrfu','5482463/yonghelu','6092271/lihongyuan','6126930/lanjay','6143536/huangshuhan']
+ids = ['2531888/ifeegoo','2744948/chiemy','5299868/misparking','5469727/chenyunxuan','5470510/ionesmile',
+'5469824/fiskz','5467900/subvin','5470345/jackwaiting','5471377/arrfu','5482463/yonghelu','6092271/lihongyuan',
+'6126930/lanjay','6143536/huangshuhan','6592747/sunshore','6546658/hellozihan'];
 
 titleFormatter =   "%20s  %10s \t %10s \t %10s \t %10s \t %10s \t %10s \t %10s \t %10s \t %10s \t %10s \t  %20s \t"
 contentFormatter = "%20s  %10s \t %10s \t %10s \t  %10s \t %10s \t %10s \t %10s \t %10s \t "
