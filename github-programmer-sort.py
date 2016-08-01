@@ -67,7 +67,7 @@ for i in xrange(0,len(ids)):  # len(ids)
 		orgCount = len(orgNum)
 		
 	#re.findall('(.*?) total',lastYearContributons[0],re.S)[0],lastYearContributons[1],lastYearContributons[2],
-	aData = (ids[i],nums[0],nums[1],nums[2],orgCount,len(repositoriesNum),perStarRatio)
+	aData = (ids[i],nums[0],nums[1],nums[2],orgCount,len(repositoriesNum),round(perStarRatio, 2))
 	dataList.append(aData)
 	reWp.close()
 	wp.close()
